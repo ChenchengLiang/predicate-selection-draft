@@ -1,0 +1,57 @@
+% \documentclass[../main.tex]{subfiles}
+
+% \begin{document}
+
+
+\section{Background}
+
+
+\subsection{Graph Encoding for Constrained Horn Clauses}
+
+%%CHC
+%%todo rewrite this (copyed from previoous paper)
+A CHC can be written in the form
+$H \leftarrow B_{1}  \wedge \cdots \wedge B_{n} \wedge \varphi$,
+where
+\begin{inparaenum}[(i)]
+  \item $B_{i}$ is an application $q_{i}(\bar{t_{i}})$ of the relation symbol $q_{i}$ to a list of first-order terms $\bar{t_{i}}$;
+  \item $H$ is either an application $q(\bar{t})$, or $\mathit{false}$;
+  \item $\varphi$ is a relation-free constraint and consists of a first-order formula.
+\end{inparaenum}
+Here, $H$ and $B_{1} \wedge \cdots \wedge B_{n} \wedge \varphi$ in the left and right hand side of implication $\leftarrow$ are called ``head" and ``body", respectively.
+
+%%Graph encoding
+Graph is a suitable format to represent CHC-encoded problems since they contain rich structural information.
+We represent the CHCs by two graphs with typed nodes and edges (i.e., \emph{control- and data-flow hypergraph} (CDHG) and \emph{constraint graph} (CG)) to emphasis syntactic and semantic information \cite{HornGraph}.  Intuitively, The CG parse CHCs in three different aspects, relation symbol, clause structure, and constraint, to describe the relations between relation symbols and their arguments, abstract syntax of head and body, and constraint. The CDHG draw all symbols in CHCs as typed nodes and use control and data flow hyperedge to describe the control and data flow in verification problems. 
+
+Formally, A graph with typed node and edges, $G=(V,\mathit{E},R,X,\ell)$, consists of a set of nodes $v\in V$, a set of typed edges $\mathit{E} \in V^{*} \times R$ where $V^{*}$ is a list of node from $V$, a set of node types $x\in X$, a set of edge types $r\in R$, and a map $\ell: v\rightarrow x$. We list two concrete examples for CDHG and CG in the appendix Figure ?. The detailed constructing process from CHCs to CG and CDHG is in \cite{HornGraph}.
+
+
+\subsection{Graph Neural Networks}
+
+Message passing-based GNNs are powerful tools for learning features from problems with graph representations. It assumes a node can capture local structural information from $t$-hop's neighbors through updating the node representation using aggregated neighbors' representations. Formally, the node representation at timestep $t$ can be computed by
+\begin{equation}\label{message-passing-based-GNN}
+  h_{v}^{t} = \phi(\rho(\{h_{u}^{t-1}|u \in N_{v}^{r}\}), h_{v}^{t-1}),
+\end{equation}
+where $\phi$ and $\rho$ are update and aggregate function, respectively, and
+$N_{v}^{r}$ is $v$'s neighbor nodes in edge type $r$.
+
+ In this work, since CDHG is hypergraph (a graph with edges which connect arbitrary number of nodes), we choose a more generalized MP-GNN architecture \hyperedgeGNN to learn the features.
+The node representation updating rule for \hyperedgeGNN at time step $t$ is
+\begin{equation}\label{Hyperedge-GNN-definition}
+  %h_{v}^{t} = {\rm ReLU}(\sum_{r \in R}\sum_{a\in A_{r}} a_{v} \cdot W_{r,a}^{t}\cdot \|_{u\in N_{v}^{r}}(h_{u}^{t-1},h_{v}^{t-1})),
+  h_{v}^{t} = {\rm ReLU}(\sum_{r\in R,p\in P_{r}}\sum_{U\in N_{v}^{r,p}} W_{r,p}^{t}\cdot \| \{ h_{u}^{t-1}\mid u\in \{U \vee v\} \} ),
+\end{equation}
+where $\| \{\cdot \}$ means concatenation of all elements in a set,
+$r\in R = \{r_i\mid i\in \mathbb{N} \}$ is the set of edge types (relations),
+$p\in P_{r}=\{p_{j} \mid j\in \mathbb{N} \}$ is the set of node positions under edge type $r$,
+$W_{r,p}^{t}$ denotes learnable parameters when the node is in the $p$th position with edge type $r$, and 
+$N_{v}^{r,p}$ denotes the set of neighbor nodes of $v$ in edge type $r$ when $v$ is in $p$th position.
+The initial node representation $h_{v}^{0}$ is derived from the node types. Note that \hyperedgeGNN can handle multiple edge types with the same number of connoted nodes. For instance, It can handle CDHG which consists of five binary and two ternary edges.
+
+
+
+
+% \end{document}
+
+

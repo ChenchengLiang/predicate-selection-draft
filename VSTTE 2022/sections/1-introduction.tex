@@ -1,0 +1,23 @@
+% \documentclass[../main.tex]{subfiles}
+
+% \begin{document}
+
+
+\section{Introduction}
+
+
+
+
+Our dataset is extracted from a collection of problems from CHC-COMP\footnote{\url{https://chc-comp.github.io/}}. The problems come from various sources (e.g., benchmarks generated with JayHorn\footnote{\url{https://github.com/chc-comp/jayhorn-benchmarks}} and differernt synthesis tools \footnote{\url{https://github.com/chc-comp/synthesis}}) and in total, there are 8705~linear and 8425~non-linear Linear Integer Arithmetic (LIA) problems. More details are in the Table~1 of the competition report~\cite{chcBenchmark}. We integrate the learned relevant filter to the model checker Eldarica~\cite{ruemmer2013disjunctive} with various strategy. The experimental results show that our framework can solve problems that cannot be solved before and decrease the solving time for solvable problems.
+
+
+\paragraph{Contributions of the paper.}
+\begin{inparaenum}[(i)]
+  \item We build a end-to-end framework which integrates a pre-trained relevant filter for the interpolation queries to obtain better abstractions in CEGAR-based Horn solver.
+  \item We explore various CHC graph representations to capture different aspects of syntactic and semantic information and the ways of using the relevant filter. 
+  \item We evaluate our framework on the CHC-COMP benchmark and show that this framework assists the CEGAR-based Horn solvers to reduce solving times and solve more problems.
+\end{inparaenum}
+
+% \end{document}
+
+
