@@ -1,13 +1,41 @@
-% \documentclass[../main.tex]{subfiles}
 
-% \begin{document}
 
 
 \section{Related work}
-\cite{10.1007/978-3-319-57288-8_18}
-\paragraph{.}
-\paragraph{.}
+\subsection{Machine Learning for Program Verification}
+Machine learning techniques has been adapted in different ways to aid formal verification. 
+%
+For instance, \cite{10.1145/3213846.3213876} propose a Recurrent Neural Network Based Language Model (RNNLM) to mine the finite-state automaton-based specification from the execution trace. 
+%
+\cite{9286080,Richter2020-yh} apply Transformer architecture~\cite{vaswani2017attention} and kernel-based methods~\cite{kernelMethods} respectively to select algorithms for program verification.
+%
+\cite{heuristicSelectionForTP} uses Support Vector Machines (SVM)~\cite{cortes1995support} and Gaussian process~\cite{10.5555/1162254} to select the heuristics for theorem proving.
+%
+Along With the thriving of deep learning techniques, more and more works tend to use GNNs to learn the features of programs and logic formulae since they are highly structured language and can be naturally represented by graph and learned by GNNs.
+%
+For instance, \cite{NIPS2017_6871,DBLP:journals/corr/abs-1905-10006}, \cite{DBLP:journals/corr/abs-1903-04671,DBLP:journals/corr/abs-1802-03685}, and \cite{Si2018LearningLI} learn features from graph represented logic formulae and programs by GNNs~\cite{DBLP:journals/corr/GilmerSRVD17,4700287,li2017gated} to aid theorem proving, SAT solving, and loop invariant reasoning, respectively. 
+%
+Every study has their unique graph representation of program logic, GNNs, and working pipeline, therefore, is not extensible to other tasks.
+%
+CHC-R-HyGNN~\cite{tech-report} proposes a general framework, which designs syntactic- and semantic-based graph representations for CHCs to generalize the graph representation for program logic, a hyperedge-compatible GNN (R-HyGNN), and two working pipelines for regression and classification tasks, to aid decision and value predication problems in program verification.
+%
+We apply a modified CHC-R-HyGNN framework to build a relevance filter for the templates to guide the predicate abstraction. 
 
-% \end{document}
+\subsection{Explore Interpolation Lattice for Predicate Abstraction}
+
+%predicate abstraction
+
+%Craig interpolation methods applied to verification
+
+%Horn solver and interpolation
+
+
+%modify interpolant query
+
+
+%Tree interpolation.
+%DAG interpolation.
+%beautiful interpolation
+%constraint-based interpolation
 
 

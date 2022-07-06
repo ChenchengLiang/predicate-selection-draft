@@ -3,23 +3,27 @@
 % \begin{document}
 
 
-\section{Evaluation}
-We first describe the source for training and evaluation and then analyse the the experimental results. 
+\section{Evaluation} \label{section:evaluation}
+We first describe the data and model for training, then analyse the the experimental results. 
 
 
 \subsection{Training model}
-Our training model consists of three components: (i) a embedding layer which map the integer-encoded nodes to the real-value feature vectors, (ii) \hyperedgeGNN, and {iii} a set of fully connected neural networks which receive gathered $\textit{template}$ node representations from \hyperedgeGNNs.
-
-\paragraph{Parameter settings.}
+Our training model consists of three components: (i) a embedding layer which map the integer-encoded nodes to the real-value feature vectors according to the node types, (ii) the \hyperedgeGNN, and (iii) a set of fully connected neural networks which receive gathered $\textit{template}$ node representations from \hyperedgeGNNs.
+The implementation is based on the framework tf2\_gnn \footnote{\url{https://github.com/microsoft/tf2-gnn}}. For parameters, we set the all middle layer sizes in the framework to 64, the number of message passing steps to 8 (i.e., apply Eq.~\ref{eq:hyperedge-GNN-definition} 8 times), the maximum training epoch to 500, and the patient to 100. For the rest of parameters, we use the default settings in the framework tf2\_gnn. 
 
 
 \subsection{benchmarks and dataset}
 We use a collection of CHC-COMP benchmarks~\cite{chcBenchmark}
 
-The dataset is available in a Github repository\footnote{\url{xx}}
+The dataset is available in a Github repository\footnote{\url{https://github.com/ChenchengLiang/Learning-abstract-predicate-dataset}}
 
 \subsection{Experimental results}
 
+
+
+
+%limitation
+One limitation of our framework is that when the learning task is a regression task (i.e., the output is a continuous number), it is hard for the framework to predict precise values. 
 
 
 % \end{document}

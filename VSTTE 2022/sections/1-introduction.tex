@@ -1,23 +1,72 @@
-% \documentclass[../main.tex]{subfiles}
 
-% \begin{document}
+
 
 
 \section{Introduction}
+In recent decades, automated program verification has become standard industry practice. 
+%
+The theme of encoding verification problem to Constrained Horn clauses (CHCs)~\cite{10.2307/2268661} and solve it by symbolic model checking has been actively pursued in research~\cite{Bjorner2015}. 
+%
+%More details about software model checking.
+%Model checking exhaustively checks whether the encoded model meets given specifications, suffers from state space explosion problem.
+Counterexample-guided abstraction refinement (CEGAR) \cite{10.1007/10722167_15} is one of the promising techniques to deal with program verification with infinite states by interatively refine the abstraction. In the predicate abstraction-based model checking~\cite{10.1007/3-540-63166-6_10,10.1145/964001.964021}, The tools, such as %HSF~\cite{10.1145/2254064.2254112} and 
+Eldarica~\cite{ruemmer2013disjunctive}, systematically refine the abstract model by the means of Craig interpolation~\cite{10.2307/2963593}.
 
+%%
 
+However, using theorem provers to search suitable interpolations (predicates to form new model abstraction) in the infinite interpolation lattice derived from the counter-examples is challenging. 
+%
+\cite{Leroux2016} systematically explores the interpolant lattice by searching good maximal feasible \emph{interpolation abstraction} in abstraction lattices constructed by powerset lattice over \emph{templates}.
+Interpolation abstraction as a semantic (solver-independent) method can significantly improve the performance of Horn solvers.
+%
+Nevertheless, the templates are chosen manually~\cite{10.1007/978-3-319-57288-8_18} depending on domain-specific knowledge (program features) extracted from static analysis (e.g., control- and data-flow analyses). 
 
+%%
 
-Our dataset is extracted from a collection of problems from CHC-COMP\footnote{\url{https://chc-comp.github.io/}}. The problems come from various sources (e.g., benchmarks generated with JayHorn\footnote{\url{https://github.com/chc-comp/jayhorn-benchmarks}} and differernt synthesis tools \footnote{\url{https://github.com/chc-comp/synthesis}}) and in total, there are 8705~linear and 8425~non-linear Linear Integer Arithmetic (LIA) problems. More details are in the Table~1 of the competition report~\cite{chcBenchmark}. We integrate the learned relevant filter to the model checker Eldarica~\cite{ruemmer2013disjunctive} with various strategy. The experimental results show that our framework can solve problems that cannot be solved before and decrease the solving time for solvable problems.
+Extracting program features usually need careful engineering and considerable domain expertise. Deep learning as a powerful data-driving feature extracting technique has been applied in program feature extracting by some research groups~\cite{DBLP:journals/corr/abs-1711-00740}.
+%
+However, learning from source code is challenging due to various syntax derived from different programming languages, conventions, regulations, and syntax sugars and intricate semantics from long-distance relation information between re-occurring identifiers.
+%
+Inst2vec~\cite{DBLP:journals/corr/abs-1806-07336} attempts to learning control and data flow features from LLVM intermediate representation~\cite{1281665} by recursive neural networks (RNNs)~\cite{Mikolov2010RecurrentNN}.
+%
+In the context of learning program features to guide predicate abstraction-based Horn solvers for program verification, our previous work (CHC-R-HyGNN)~\cite{tech-report} proposed a Graph Neural Networks (GNNs)~\cite{DBLP:journals/corr/abs-1806-01261} based framework to embed CHCs and learn the program semantic features from them.
+%
+From the best of our knowledge, we didn't see any research that apply GNNs to guide systematically exploring predicate abstraction in infinite interpolant lattice for solving CHC-encoded program verification problems. 
 
+%%
 
-\paragraph{Contributions of the paper.}
-\begin{inparaenum}[(i)]
-  \item We build a end-to-end framework which integrates a pre-trained relevant filter for the interpolation queries to obtain better abstractions in CEGAR-based Horn solver.
-  \item We explore various CHC graph representations to capture different aspects of syntactic and semantic information and the ways of using the relevant filter. 
-  \item We evaluate our framework on the CHC-COMP benchmark and show that this framework assists the CEGAR-based Horn solvers to reduce solving times and solve more problems.
-\end{inparaenum}
+%Therefore, in this study, we introduce learning-based framework for predicate refinement to guide the program verification.
+In this study, we apply the CHC-R-HyGNN framework to learn the domain-specific knowledge from CHCs with graph representations to guide the template selection for abstraction interpolation to solve CHC-encoded program verification problems.
+%
+We first label the training data by mined predicate abstractions from solvable verification problems, then train a relevance filter by the CHC-R-HyGNN framework.
+%
+We integrate the learned relevant filter to the model checker Eldarica~\cite{ruemmer2013disjunctive} with various strategies to reduce the solving time for the verification problems. 
+%
+Notice that abstraction interpolation is a solver-independent technique. Therefore, the trained relevance filter can be applied to other Horn solvers as well.
 
-% \end{document}
+%%
+
+Our dataset is extracted from a collection of problems from CHC-COMP\footnote{\url{https://chc-comp.github.io/}}. The problems come from various sources (e.g., benchmarks generated with JayHorn\footnote{\url{https://github.com/chc-comp/jayhorn-benchmarks}} and differernt synthesis tools\footnote{\url{https://github.com/chc-comp/synthesis}}) and in total, there are 8705~linear and 8425~non-linear Linear Integer Arithmetic (LIA) problems.
+%
+More details are in the Table~1 of the competition report~\cite{chcBenchmark}.
+
+%%
+
+The experimental results show that our framework can solve problems that cannot be solved before and decrease the solving time for solvable problems. 
+%even without fine-tuning it performs well. There are many way to fine-tuning the framework the get better results for particular tasks.
+%Besides, our implementation is straightforward without any exploitation. 
+
+%%
+
+\paragraph{Contributions and the organisation of the study:}
+\begin{enumerate}[(i)]
+  \item We build a predicate miner to label the templates and apply CHC-R-HyGNN with modified CHC graph representations to train a relevance filter to guide the template selection.
+  \item We build a end-to-end framework which integrates the pre-trained template selector to the abstraction interpolation technique, which results better abstractions in CEGAR-based Horn solvers (Section \ref{section:CEGAR}).
+%   \item We explore various CHC graph representations to capture different aspects of syntactic and semantic information and the ways of using the relevant filter (Section \ref{section:template-selection}); 
+  \item We evaluate our framework on the template selection task with CHC-COMP benchmark and show that this framework assists the CEGAR-based Horn solvers to reduce solving times and solve more problems (Section \ref{section:evaluation}).
+\end{enumerate}
+
+% \begin{inparaenum}[(i)]
+% \end{inparaenum}
 
 
