@@ -1,0 +1,33 @@
+\section{Template Selection}\label{section:template-selection}
+
+
+
+\subsection{Training model}
+%
+The input of the model is a graph representation (CDHG or CG) of the CHCs attached with unlabeled templates. 
+%
+The unlabeled template set consists of (i) single boolean variables, (ii) single positive and negative integer variables, (iii) combination of all pair of integer variables in the form of $v_{1} + v_{2} = 0$ and $v_{1} - v_{2} = 0$, and (iv) combination of all pair of integer variables in the form of $v_{1} + v_{2} >= 0$, $v_{1} - v_{2} >= 0$, $-(v_{1} + v_{2}) >= 0$, and $-(v_{1} - v_{2}) >= 0$.
+%
+The unlabeled templates are attached to the graph representations by connecting the roots of template syntax trees to the corresponding relation symbol nodes.
+
+%%
+
+The output of the model is a set of selected templates from the unlabeled templates.
+%
+We train two models to predict the usefulness of boolean and integer templates independently. For the boolean and integer templates, the model perform binary and multi- classification, respectively.
+%
+Even if the usefulness of the templates are predicted separately by two models, we merge them when we construct the abstract interpolant lattice.
+
+%%
+
+The neural network consists of three components: (i) a embedding layer which map the integer-encoded nodes to the real-value feature vectors according to the node types, (ii) the \hyperedgeGNN, and (iii) a set of fully connected neural networks which receive gathered $\textit{template}$ node representations from \hyperedgeGNNs.
+
+\subsection{Training data}
+We label the the usefulness of the templates by a template miner. 
+
+...
+
+
+
+
+

@@ -1,0 +1,80 @@
+
+
+
+
+\section{Introduction}
+In recent decades, automated program verification has become standard industry practice. 
+%
+The theme of encoding verification problems to Constrained Horn clauses (CHCs)~\cite{10.2307/2268661} and solving them by symbolic model checking have been actively pursued in research~\cite{Bjorner2015}. 
+%
+However, model checkers, that exhaustively check whether the encoded model meets given specifications, suffers from state space explosion problem. 
+%
+%More details about software model checking.
+%
+Counterexample-guided abstraction refinement (CEGAR) \cite{10.1007/10722167_15} is one of the promising techniques to deal with models with infinite states by iteratively refining and checking the model's abstraction.
+%
+Refining model's abstraction in each CEGAR' iteration is essential to improve the solving time and requires domain-specific knowledge.  
+
+%%
+
+In the predicate abstraction-based model checking~\cite{10.1007/3-540-63166-6_10,10.1145/964001.964021}, the tools, such as %HSF~\cite{10.1145/2254064.2254112} and 
+Eldarica~\cite{ruemmer2013disjunctive}, refine the abstract model by the means of Craig interpolation~\cite{10.2307/2963593}. 
+%
+They use a set of predicates to represent the abstract model, and refining it by adding new predicates to the set. The new predicates in each CEGAR iteration are obtained by searching suitable interpolations in the infinite interpolation lattice derived from the counter-examples.
+%
+\cite{Leroux2016} systematically explores the interpolant lattice by searching good maximal feasible \emph{interpolation abstraction} in abstraction lattices constructed by powerset lattice over \emph{templates}. In the context of program verification, templates are variables and terms in the programs.
+%
+Nevertheless, the templates are chosen manually~\cite{10.1007/978-3-319-57288-8_18} depending on domain-specific knowledge (program features) extracted from static analysis (e.g., control- and data-flow analyses). 
+%
+Extracting program features usually need careful engineering and considerable domain expertise.
+
+%%
+
+Therefore, we want to combine a powerful data-driving feature extracting technique, deep learning, to learn the program features automatically~\cite{DBLP:journals/corr/abs-1711-00740}. 
+%
+In our previous work (CHC-R-HyGNN)~\cite{tech-report}, we built a Graph Neural Network (GNN)~\cite{DBLP:journals/corr/abs-1806-01261} -based framework to describe and extract program features in the form of CHCs. 
+%
+Learning program features from the form of CHC can eliminate the syntactic affects from source code in different programming languages. 
+%
+From the best of our knowledge, we didn't see any research that apply GNNs to guide the template selection which is the essential to systematically explore predicate abstraction in infinite interpolant lattice for solving CHC-encoded program verification problems. 
+
+%%
+
+In this study, we apply the CHC-R-HyGNN framework, which learns the program features from CHCs, to guide the template selection.  
+%
+To train a relevance filter for the templates, we label the training data by a predicate miner.
+%todo: explain the predicate miner
+
+%%
+Furthermore, we explore how to combine the GNN-selected templates with the templates generated from static analysis in \cite{Leroux2016}' experiments to further improve the solving time for program verification problems.
+%
+We evaluate our methods in the model checker Eldarica~\cite{ruemmer2013disjunctive}.
+%
+Notice that the abstraction interpolation is a solver-independent technique. Therefore, the trained template relevance filter can be applied to other model checkers as well.
+
+%%
+
+Our dataset is extracted from a collection of problems from CHC-COMP\footnote{\url{https://chc-comp.github.io/}}. The problems come from various sources (e.g., benchmarks generated with JayHorn\footnote{\url{https://github.com/chc-comp/jayhorn-benchmarks}} and differernt synthesis tools\footnote{\url{https://github.com/chc-comp/synthesis}}) and in total, there are 8705~linear and 8425~non-linear Linear Integer Arithmetic (LIA) problems.
+%
+More details about the benchmarks are in the Table~1 of the competition report~\cite{chcBenchmark}.
+
+%%
+
+%The experimental results show that our framework can solve problems that cannot be solved before and decrease the solving time for solvable problems. 
+%even without fine-tuning it performs well. There are many way to fine-tuning the framework the get better results for particular tasks.
+%Besides, our implementation is straightforward without any exploitation. 
+
+%%
+
+\paragraph{Contributions and the organisation of the study:}
+\begin{enumerate}[(i)]
+  \item We build a predicate miner to label the templates and apply CHC-R-HyGNN to train a GNN model as the template relevance filter. It works as a data driven-based heuristic to guide the searching in infinite interpolant lattice (Section \ref{section:template-selection}).
+  \item We build a end-to-end pipeline that can combine the templates generated from various static analysis strategies with GNN-selected templates. This can leverage both methods and obtain the best performance in program verification problems (Section \ref{section:apply-selected-templates}). 
+  \item We evaluate our methods on CHC-COMP benchmark and show that they assist the predicate abstraction-based model checking to reduce solving times and solve more problems (Section \ref{section:evaluation}).
+  %   \item We explore various CHC graph representations to capture different aspects of syntactic and semantic information and the ways of using the relevant filter (Section \ref{section:template-selection});
+\end{enumerate}
+
+% \begin{inparaenum}[(i)]
+% \end{inparaenum}
+
+

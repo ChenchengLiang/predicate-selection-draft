@@ -1,0 +1,36 @@
+
+
+\section{Apply Selected Templates}\label{section:apply-selected-templates}
+
+\cite{Leroux2016} proposed four strategies to construct the templates by performing static analysis in the programs. We call them T2, 3, 4, and 5.
+%
+And, every template has a cost value (an integer) to guide the search algorithm to find ``good" interpolants in the abstract interpolant lattice constructed by the templates.
+
+%%
+
+In this study, we combine the GNN-selected templates (T1) with (T2-5) by two ways. The cost of the T1 is decided by three ways.
+
+%%
+
+The two ways to combine templates in each CEGAR iteration are:
+\begin{enumerate}
+  \item union: using either T1 or one of T2-5.
+  \item random: merging the new predicate set generated from T1 and one of T2-5. 
+\end{enumerate}
+
+%%
+
+The three ways to assign cost values to the GNN-predicted templates are:
+\begin{enumerate}
+  \item C1: all templates use the same cost value.
+  \item C2: the cost values are inversely proportional to the sigmoid output from GNNs. 
+  \item C3: the cost values are inversely proportional to the number of variables in the tempaltes.
+\end{enumerate}
+
+
+
+
+
+
+
+

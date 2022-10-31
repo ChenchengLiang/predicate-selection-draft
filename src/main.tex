@@ -26,17 +26,21 @@
 
 \begin{document}
 %
-\title{Systematic Predicate Abstraction using Graph Neural Networks}
+\title{Systematic Predicate Abstraction using Graph Neural Networks (Technical Report)}
 %
 %\titlerunning{Abbreviated paper title}
 % If the paper title is too long for the running head, you can set
 % an abbreviated paper title here
 %
+
+
 \author{Chencheng Liang\inst{1}%\orcidID{0000-0002-4926-8089} 
 \and
 Philipp Rümmer\inst{1,2}%\orcidID{0000-0002-2733-7098} 
 \and
 Marc Brockschmidt\inst{3}%\orcidID{0000-0001-6277-2768}
+\and
+Parosh Aziz Abdulla\inst{1}
 }
 %
 \authorrunning{C. Liang et al.}
@@ -61,33 +65,19 @@ Microsoft Research\\
 %
 \maketitle              % typeset the header of the contribution
 %
-\begin{abstract}
-The abstract should briefly summarize the contents of the paper in
-15--250 words.
-
-\keywords{Automatic program verification  \and Constraint Horn clauses \and Graph Neural Networks.}
-\end{abstract}
-%
-%
-%
-% \subfile{sections/1-introduction}
-% \subfile{sections/2-background}
-% \subfile{sections/3-template-selection}
-% \subfile{sections/4-evaluation}
-% \subfile{sections/5-related-works}
-% \subfile{sections/6-conclusion-and-future-works}
 
 
+%\import{sections/}{0-abstract}
 \import{sections/}{1-introduction}
 \import{sections/}{2-background}
-\import{sections/}{3-CEGAR}
-\import{sections/}{4-template-selection}
+\import{sections/}{3-template-selection}
+\import{sections/}{4-apply-selected-templates}
 \import{sections/}{5-evaluation}
 \import{sections/}{6-related-works}
 \import{sections/}{7-conclusion-and-future-works}
 
 
-\bibliographystyle{splncs04}
+\bibliographystyle{unsrt}
 \bibliography{mybibliography}
 
 \end{document}
